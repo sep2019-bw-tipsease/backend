@@ -6,7 +6,8 @@ module.exports = {
   findBy,
   findById,
   remove,
-  findWorkers
+  findWorkers,
+  addTip
 };
 
 function find() {
@@ -64,7 +65,13 @@ function findWorkers() {
     .where({ role: "worker" });
 }
 
-function addTip(id, tip) {
-  const { id } = req.params;
-  let { tip } = req.body;
+function addTip(tip, id) {
+  return db("users")
+    .join("workerData", "worker_id", "id")
+    .select("tip_total")
+    .where({ role: "worker", id })
+    .first()
+    .then(worker => {
+      return (worker.tip_total += tip);
+    });
 }
