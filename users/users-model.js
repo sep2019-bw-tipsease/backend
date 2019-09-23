@@ -65,13 +65,11 @@ function findWorkers() {
     .where({ role: "worker" });
 }
 
-function addTip(tip, id) {
-  return db("users")
-    .join("workerData", "worker_id", "id")
-    .select("tip_total")
-    .where({ role: "worker", id })
-    .first()
-    .then(worker => {
-      return (worker.tip_total += tip);
-    });
+async function addTip(tip, id) {
+  tip_total = await db("workerData")
+    .where({ worker_id: id })
+    .pluck("tip_total");
+  const worker = await db("workerData")
+    .where({ worker_id: id })
+    .update("tip_total", Number(tip) + Number(tip_total));
 }

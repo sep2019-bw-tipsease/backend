@@ -85,6 +85,7 @@ router.put("/workers/:id/", (req, res) => {
   return Users.findById(id)
     .then(async worker => {
       worker.tip_total = await Users.addTip(tip, id);
+
       res.status(200).json(worker.tip_total);
     })
     .catch(err => {
