@@ -1,7 +1,7 @@
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const Users = require("./users-model");
+// const Users = require("./users-model");
 
 module.exports = (req, res, next) => {
   const token = req.headers.authorization;
@@ -17,6 +17,6 @@ module.exports = (req, res, next) => {
       }
     });
   } else {
-    res.status(400).json({ message: "YOU SHALL NOT PASS" });
+    res.status(400).json({ message: "You are not authorized" });
   }
 };

@@ -1,10 +1,11 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const restricted = require("./restricted");
 
 const Users = require("./users-model.js");
 
-router.get("/", (req, res) => {
+router.get("/", restricted, (req, res) => {
   Users.find()
     .then(users => {
       res.status(200).json(users);
@@ -55,7 +56,7 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.get("/workers", (req, res) => {
+router.get("/workers", restricted, (req, res) => {
   Users.findWorkers()
     .then(workers => {
       res.status(200).json(workers);
@@ -66,7 +67,7 @@ router.get("/workers", (req, res) => {
     });
 });
 
-router.get("/workers/:id", (req, res) => {
+router.get("/workers/:id", restricted, (req, res) => {
   const { id } = req.params;
   Users.findById(id)
     .then(worker => {
@@ -78,7 +79,7 @@ router.get("/workers/:id", (req, res) => {
     });
 });
 
-router.put("/workers/:id/", (req, res) => {
+router.put("/workers/:id/", restricted, (req, res) => {
   const { id } = req.params;
   const { tip } = req.body;
 
