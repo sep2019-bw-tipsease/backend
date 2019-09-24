@@ -23,11 +23,7 @@ router.post("/register", (req, res) => {
 
   Users.add(user)
     .then(saved => {
-      const token = generateToken(saved);
-      res.status(201).json({
-        saved,
-        token
-      });
+      res.status(201).json(saved);
     })
     .catch(err => {
       console.log(err);
@@ -83,7 +79,7 @@ router.put("/workers/:id/", restricted, (req, res) => {
   const { id } = req.params;
   const { tip } = req.body;
 
-  return Users.findById(id)
+  return Users.findWorkerById(id)
     .then(async worker => {
       worker.tip_total = await Users.addTip(tip, id);
 
