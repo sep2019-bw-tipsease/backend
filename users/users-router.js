@@ -25,7 +25,7 @@ router.post("/register", (req, res) => {
     .then(saved => {
       const token = generateToken(saved);
       res.status(201).json({
-        user: saved,
+        saved,
         token
       });
     })
@@ -69,7 +69,7 @@ router.get("/workers", restricted, (req, res) => {
 
 router.get("/workers/:id", restricted, (req, res) => {
   const { id } = req.params;
-  Users.findById(id)
+  Users.findWorkerById(id)
     .then(worker => {
       res.status(200).json(worker);
     })
