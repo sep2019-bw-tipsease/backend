@@ -79,7 +79,7 @@ router.put("/workers/:id/", restricted, (req, res) => {
   const { id } = req.params;
   const { tip } = req.body;
 
-  return Users.findById(id)
+  return Users.findWorkerById(id)
     .then(async worker => {
       worker.tip_total = await Users.addTip(tip, id);
 
