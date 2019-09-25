@@ -5,42 +5,46 @@ const restricted = require("./restricted");
 
 const Users = require("./users-model.js");
 
-router.get("/", (req, res) => {
-  Users.find()
-    .then(users => {
-      res.status(200).json(users);
+router.post("/register/worker", (req, res) => {
+  let worker = req.body;
+  const hash = bcrypt.hashSync(worker.password, 10);
+  worker.password = hash;
+
+  Users.addWorker(worker)
+    .then(newWorker => {
+      res.status(201).json(newWorker);
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ message: "Failed to get users" });
+      res.status(500).json({ error: "error adding a new worker" });
     });
 });
 
-router.post("/register", (req, res) => {
-  let user = req.body;
-  const hash = bcrypt.hashSync(user.password, 10);
-  user.password = hash;
+router.post("/register/customer", (req, res) => {
+  let customer = req.body;
+  const hash = bcrypt.hashSync(customer.password, 10);
+  customer.password = hash;
 
-  Users.add(user)
-    .then(saved => {
-      res.status(201).json(saved);
+  Users.addCustomer(customer)
+    .then(newCustomer => {
+      res.status(201).json(newCustomer);
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ error: "error adding a new user" });
+      res.status(500).json({ error: "error adding a new customer" });
     });
 });
 
-router.post("/login", (req, res) => {
+router.post("/workerlogin", (req, res) => {
   let { username, password } = req.body;
 
-  Users.findBy({ username })
+  Users.findWorkerBy({ username })
     .first()
-    .then(user => {
-      if (user && bcrypt.compareSync(password, user.password)) {
-        const token = generateToken(user);
+    .then(worker => {
+      if (worker && bcrypt.compareSync(password, worker.password)) {
+        const token = generateToken(worker);
         res.status(200).json({
-          message: `Welcome ${user.username}!`,
+          message: `Welcome ${worker.username}!`,
           token
         });
       } else {
@@ -53,8 +57,41 @@ router.post("/login", (req, res) => {
     });
 });
 
+router.post("/customerlogin", (req, res) => {
+  let { username, password } = req.body;
+
+  Users.findCustomerBy({ username })
+    .first()
+    .then(customer => {
+      if (customer && bcrypt.compareSync(password, customer.password)) {
+        const token = generateToken(customer);
+        res.status(200).json({
+          message: `Welcome ${customer.username}!`,
+          token
+        });
+      } else {
+        res.status(401).json({ message: "error logging in" });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json(error.message);
+    });
+});
+
+router.get("/customers", (req, res) => {
+  Users.getCustomers()
+    .then(customers => {
+      res.status(200).json(customers);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: "Failed to get customers" });
+    });
+});
+
 router.get("/workers", restricted, (req, res) => {
-  Users.findWorkers()
+  Users.getWorkers()
     .then(workers => {
       res.status(200).json(workers);
     })
@@ -66,7 +103,7 @@ router.get("/workers", restricted, (req, res) => {
 
 router.get("/workers/:id", restricted, (req, res) => {
   const { id } = req.params;
-  Users.findWorkerById(id)
+  Users.getWorkerById(id)
     .then(worker => {
       res.status(200).json(worker);
     })
@@ -76,7 +113,34 @@ router.get("/workers/:id", restricted, (req, res) => {
     });
 });
 
-router.put("/workers/:id/", restricted, (req, res) => {
+router.get("/customers/:id", restricted, (req, res) => {
+  const { id } = req.params;
+  Users.getCustomerById(id)
+    .then(customer => {
+      res.status(200).json(customer);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: "error getting this customer" });
+    });
+});
+
+router.put("/workers/:id", restricted, (req, res) => {
+  const { id } = req.params;
+  const { time, tagline, job_title, company } = req.body;
+
+  return Users.findWorkerById(id)
+    .then(async worker => {
+      const updatedWorker = addWorkerData(worker);
+      res.status(200).json(updatedWorker);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: "error adding tip" });
+    });
+});
+
+router.put("/workers/:id/tips", restricted, (req, res) => {
   const { id } = req.params;
   const { tip } = req.body;
 

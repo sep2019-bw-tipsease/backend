@@ -1,52 +1,54 @@
 const db = require("../data/dbConfig.js");
 
 module.exports = {
-  add,
-  find,
-  findBy,
-  findById,
+  addCustomer,
+  getCustomers,
+  findWorkerBy,
+  findCustomerBy,
+  getCustomerById,
   remove,
-  findWorkers,
+  getWorkers,
   addTip,
-  findWorkerById
+  getWorkerById,
+  addWorker,
+  addWorkerData
 };
 
-function find() {
-  return db("users");
+function getCustomers() {
+  return db("customers");
 }
 
-function findBy(filter) {
-  return db("users").where(filter);
+function getWorkers() {
+  return db("workers");
 }
 
-async function add(user) {
-  const [id] = await db("users").insert(user);
-  // console.log("findbyid", findById(id));
-  return findById(id);
+function findWorkerBy(filter) {
+  return db("workers").where(filter);
 }
 
-function findById(id) {
-  return db("users")
-    .select("username", "first_name", "last_name")
+function findCustomerBy(filter) {
+  return db("customers").where(filter);
+}
+
+async function addCustomer(customer) {
+  const [id] = await db("customers").insert(customer);
+  return getCustomerById(id);
+}
+
+async function addWorker(worker) {
+  const [id] = await db("workers").insert(worker);
+  return getWorkerById(id);
+}
+
+function getCustomerById(id) {
+  return db("customers")
     .where({ id })
     .first();
 }
 
-function findWorkerById(id) {
-  return db("users")
-    .join("workerData", "worker_id", "id")
-    .select(
-      "username",
-      "first_name",
-      "last_name",
-      "image",
-      "time",
-      "tagline",
-      "job_title",
-      "company",
-      "tip_total"
-    )
-    .where({ role: "worker", id })
+function getWorkerById(id) {
+  return db("workers")
+    .where({ id })
     .first();
 }
 
@@ -56,23 +58,6 @@ function remove(id) {
     .del();
 }
 
-function findWorkers() {
-  return db("users")
-    .join("workerData", "worker_id", "id")
-    .select(
-      "username",
-      "first_name",
-      "last_name",
-      "image",
-      "time",
-      "tagline",
-      "job_title",
-      "company",
-      "tip_total"
-    )
-    .where({ role: "worker" });
-}
-
 async function addTip(tip, id) {
   tip_total = await db("workerData")
     .where({ worker_id: id })
@@ -80,4 +65,13 @@ async function addTip(tip, id) {
   const worker = await db("workerData")
     .where({ worker_id: id })
     .update("tip_total", Number(tip) + Number(tip_total));
+}
+
+async function addWorkerData(worker) {
+  worker = await db("workerData")
+    .pluck("time", "tagline", "job_title", "company")
+    .update("worker.time", time)
+    .update("worker.tagline", tagline)
+    .update("worker.job_title", job_title)
+    .update("worker.company", company);
 }
