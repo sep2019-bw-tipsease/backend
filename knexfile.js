@@ -22,10 +22,10 @@ module.exports = {
     useNullAsDefault: true,
     connection: process.env.DATABASE_URL
     migrations: {
-      directory: "./data/migrations"
+      directory: "./data/migrations"+ "/db/migrations"
     },
     seeds: {
-      directory: "./data/seeds"
+      directory: "./data/seeds" + "/db/seeds/production"
     }
   }
 };
