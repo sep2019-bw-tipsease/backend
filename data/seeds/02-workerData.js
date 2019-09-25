@@ -1,12 +1,16 @@
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex("workerData")
+  return knex("workers")
     .del()
     .then(function() {
       // Inserts seed entries
-      return knex("workerData").insert([
+      return knex("workers").insert([
         {
-          worker_id: 1,
+          id: 1,
+          username: "kayla44",
+          password: "password123",
+          first_name: "Kayla",
+          last_name: "Brown",
           time: "9 months",
           tagline: "Service, Just The Best.",
           job_title: "server",
@@ -14,7 +18,11 @@ exports.seed = function(knex) {
           tip_total: "88.42"
         },
         {
-          worker_id: 2,
+          id: 2,
+          username: "susano",
+          password: "password123",
+          first_name: "Susan",
+          last_name: "Omelet",
           time: "4 months",
           tagline: "I wish I had luggage.",
           job_title: "bellhop",
@@ -22,12 +30,16 @@ exports.seed = function(knex) {
           tip_total: "26.54"
         },
         {
-          worker_id: 4,
+          id: 3,
+          username: "bmac5465",
+          password: "pass555",
+          first_name: "Brandon",
+          last_name: "McCoy",
           time: "1 year 2 months",
           tagline: "Behold the power of cool.",
           job_title: "waiter",
           company: "Olive Garden",
-          tip_total: "512.42"
+          tip_total: "52.42"
         }
       ]);
     });
