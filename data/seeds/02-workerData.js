@@ -27,7 +27,7 @@ exports.seed = function(knex) {
           tagline: "Behold the power of cool.",
           job_title: "waiter",
           company: "Olive Garden",
-          tip_total: "16,512.42"
+          tip_total: "512.42"
         }
       ]);
     });
