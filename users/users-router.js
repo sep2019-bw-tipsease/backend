@@ -173,7 +173,7 @@ router.put("/workers/:id/tips", restricted, (req, res) => {
     .increment("tip_total", tip)
     .then(tip => {
       res.status(201).json({
-        message: `You have tipped $${tip}!`
+        message: `You have tipped successfully tipped!`
       });
     })
     .catch(err => {
