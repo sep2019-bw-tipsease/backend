@@ -30,15 +30,31 @@ function findCustomerBy(filter) {
   return db("customers").where(filter);
 }
 
-async function addCustomer(customer) {
-  const [id] = await db("customers").insert(customer);
-  return getCustomerById(id);
+// async function addCustomer(customer) {
+//   const [id] = await db("customers").insert(customer);
+//   return getCustomerById(id);
+// }
+
+function addCustomer(customer) {
+  return db("customers")
+    .insert(customer)
+    .then(id => {
+      return getCustomerById(id[0]);
+    });
 }
 
-async function addWorker(worker) {
-  const [id] = await db("workers").insert(worker);
-  return getWorkerById(id);
+function addWorker(customer) {
+  return db("customers")
+    .insert(customer)
+    .then(id => {
+      return getCustomerById(id[0]);
+    });
 }
+
+// async function addWorker(worker) {
+//   const [id] = await db("workers").insert(worker);
+//   return getWorkerById(id);
+// }
 
 function getCustomerById(id) {
   return db("customers")
