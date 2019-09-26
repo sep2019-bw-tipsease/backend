@@ -31,7 +31,7 @@ router.post("/register/customer", (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ error: "error adding a new customer" });
+      res.status(500).json({ error: err });
     });
 });
 
