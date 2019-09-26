@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const restricted = require("./restricted");
+const db = require("../data/dbConfig.js");
 
 const Users = require("./users-model.js");
 
@@ -170,7 +171,7 @@ router.put("/workers/:id/tips", restricted, (req, res) => {
     .where({ id })
     .select("tip_total")
     .increment("tip_total", tip)
-    .then(res => {
+    .then(tip => {
       res.status(201).json({
         message: `You have tipped $${tip}!`
       });
