@@ -45,11 +45,10 @@ function addCustomer(customer) {
 }
 
 function addWorker(worker) {
-  return db("workers")
-    .insert(worker)
-    .then(id => {
-      return getWorkerById(id[0]);
-    });
+  return db("workers").insert(worker);
+  // .then(id => {
+  //   return getWorkerById(id[0]);
+  // });
 }
 
 // async function addWorker(worker) {
