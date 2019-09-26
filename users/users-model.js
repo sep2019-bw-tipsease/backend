@@ -11,7 +11,7 @@ module.exports = {
   addTip,
   getWorkerById,
   addWorker,
-  addWorkerData
+  updateWorker
 };
 
 function getCustomers() {
@@ -75,19 +75,22 @@ function remove(id) {
 }
 
 async function addTip(tip, id) {
-  tip_total = await db("workerData")
-    .where({ worker_id: id })
+  tip_total = await db("workers")
+    .where({ id })
     .pluck("tip_total");
-  const worker = await db("workerData")
-    .where({ worker_id: id })
+  const worker = await db("workers")
+    .where({ id })
     .update("tip_total", Number(tip) + Number(tip_total));
 }
 
-async function addWorkerData(worker) {
-  worker = await db("workerData")
-    .pluck("time", "tagline", "job_title", "company")
-    .update("worker.time", time)
-    .update("worker.tagline", tagline)
-    .update("worker.job_title", job_title)
-    .update("worker.company", company);
+function updateWorker(id, updateInfo) {
+  return db("workers")
+    .where({ id })
+    .update("time", updateInfo.time)
+    .update("tagline", updateInfo.tagline)
+    .update("job_title", updateInfo.job_title)
+    .update("company", updateInfo.company)
+    .then(() => {
+      return getWorkerById(id);
+    });
 }

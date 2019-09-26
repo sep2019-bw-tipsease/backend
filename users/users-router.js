@@ -129,9 +129,8 @@ router.put("/workers/:id", restricted, (req, res) => {
   const { id } = req.params;
   const updatedInfo = req.body;
 
-  return Users.findWorkerById(id)
-    .then(async worker => {
-      const updatedWorker = addWorkerData(worker);
+  Users.updateWorker(id, updatedInfo)
+    .then(updatedWorker => {
       res.status(200).json(updatedWorker);
     })
     .catch(err => {
@@ -144,7 +143,7 @@ router.put("/workers/:id/tips", restricted, (req, res) => {
   const { id } = req.params;
   const { tip } = req.body;
 
-  return Users.findWorkerById(id)
+  return Users.getWorkerById(id)
     .then(async worker => {
       worker.tip_total = await Users.addTip(tip, id);
 
