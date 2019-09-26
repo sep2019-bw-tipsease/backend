@@ -11,14 +11,13 @@ router.post("/register/worker", (req, res) => {
   const hash = bcrypt.hashSync(worker.password, 10);
   worker.password = hash;
 
-  Users.addWorker(worker)
-    .then(newWorker => {
-      res.status(201).json(newWorker);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ error: err });
-    });
+  Users.addWorker(worker).then(newWorker => {
+    res.status(201).json(newWorker);
+  });
+  // .catch(err => {
+  //   console.log(err);
+  //   res.status(500).json({ error: err });
+  // });
 });
 
 router.post("/register/customer", (req, res) => {
