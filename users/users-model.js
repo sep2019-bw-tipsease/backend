@@ -75,7 +75,7 @@ function remove(id) {
 }
 
 async function addTip(tip, id) {
-  tip_total = await db("workers")
+  const tip_total = await db("workers")
     .where({ id })
     .pluck("tip_total");
   const worker = await db("workers")
