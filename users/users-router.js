@@ -140,47 +140,47 @@ router.put("/workers/:id", restricted, (req, res) => {
     });
 });
 
-// router.put("/workers/:id/tips", restricted, (req, res) => {
-//   const { id } = req.params;
-//   const { tip } = req.body;
-
-//   Users.getTipTotal(id)
-//     .then(currentTips => {
-//       const newTotal = Number(currentTips.tip_total) + Number(tip);
-//       return newTotal;
-//     })
-//     .then(currentTotal => {
-//       console.log(currentTotal);
-//       return Users.updateTip(currentTotal, id);
-//     })
-//     .then(currentTotal => {
-//       console.log(currentTotal);
-//       res.status(200).json(currentTotal);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.status(500).json({ error: "error adding tip" });
-//     });
-// });
-
 router.put("/workers/:id/tips", restricted, (req, res) => {
   const { id } = req.params;
   const { tip } = req.body;
 
-  db("workers")
-    .where({ id })
-    .select("tip_total")
-    .increment("tip_total", tip)
-    .then(tip => {
-      res.status(201).json({
-        message: `You have successfully tipped!`
-      });
+  Users.getTipTotal(id)
+    .then(currentTips => {
+      const newTotal = Number(currentTips.tip_total) + Number(tip);
+      return newTotal;
+    })
+    .then(currentTotal => {
+      console.log(currentTotal);
+      return Users.updateTip(currentTotal, id);
+    })
+    .then(currentTotal => {
+      console.log(currentTotal);
+      res.status(200).json(currentTotal);
     })
     .catch(err => {
       console.log(err);
       res.status(500).json({ error: "error adding tip" });
     });
 });
+
+// router.put("/workers/:id/tips", restricted, (req, res) => {
+//   const { id } = req.params;
+//   const { tip } = req.body;
+
+//   db("workers")
+//     .where({ id })
+//     .select("tip_total")
+//     .increment("tip_total", tip)
+//     .then(tip => {
+//       res.status(201).json({
+//         message: `You have successfully tipped!`
+//       });
+//     })
+//     .catch(err => {
+//       console.log(err);
+//       res.status(500).json({ error: "error adding tip" });
+//     });
+// });
 
 function generateToken(user) {
   const payload = {

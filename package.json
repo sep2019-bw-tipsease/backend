@@ -18,6 +18,9 @@
   "bugs": {
     "url": "https://github.com/sep2019-bw-tipsease/backend/issues"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "homepage": "https://github.com/sep2019-bw-tipsease/backend#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -31,6 +34,8 @@
     "sqlite3": "^4.1.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.2"
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.2",
+    "supertest": "^4.0.2"
   }
 }
