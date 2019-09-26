@@ -8,10 +8,11 @@ module.exports = {
   getCustomerById,
   remove,
   getWorkers,
-  addTip,
+  updateTip,
   getWorkerById,
   addWorker,
-  updateWorker
+  updateWorker,
+  getTipTotal
 };
 
 function getCustomers() {
@@ -74,13 +75,17 @@ function remove(id) {
     .del();
 }
 
-async function addTip(tip, id) {
-  const tip_total = await db("workers")
+function getTipTotal(id) {
+  return db("workers")
     .where({ id })
-    .pluck("tip_total");
-  const worker = await db("workers")
+    .select("tip_total")
+    .first();
+}
+
+function updateTip(tip, id) {
+  return db("workers")
     .where({ id })
-    .update("tip_total", Number(tip) + Number(tip_total));
+    .update("tip_total", Number(tip));
 }
 
 function updateWorker(id, updateInfo) {
