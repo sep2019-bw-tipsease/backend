@@ -145,7 +145,7 @@ router.put("/workers/:id/tips", restricted, (req, res) => {
 
   Users.getTipTotal(id)
     .then(currentTips => {
-      const newTotal = currentTips.tip_total + tip;
+      const newTotal = Number(currentTips.tip_total) + Number(tip);
       return newTotal;
     })
     .then(currentTotal => {
