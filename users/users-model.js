@@ -43,11 +43,11 @@ function addCustomer(customer) {
     });
 }
 
-function addWorker(customer) {
-  return db("customers")
-    .insert(customer)
+function addWorker(worker) {
+  return db("workers")
+    .insert(worker)
     .then(id => {
-      return getCustomerById(id[0]);
+      return getWorkerById(id[0]);
     });
 }
 
