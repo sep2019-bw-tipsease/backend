@@ -37,11 +37,10 @@ function findCustomerBy(filter) {
 // }
 
 function addCustomer(customer) {
-  return db("customers")
-    .insert(customer)
-    .then(id => {
-      return getCustomerById(id[0]);
-    });
+  return db("customers").insert(customer);
+  // .then(id => {
+  //   return getCustomerById(id[0]);
+  // });
 }
 
 function addWorker(worker) {
