@@ -25,7 +25,7 @@ exports.up = function(knex) {
       workers.string("tagline").notNullable();
       workers.string("job_title").notNullable();
       workers.string("company").notNullable();
-      workers.decimal("tip_total").defaultTo(0);
+      workers.integer("tip_total").defaultTo(0);
     });
 };
 
