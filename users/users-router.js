@@ -16,7 +16,7 @@ router.post("/register/worker", (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ error: "error adding a new worker" });
+      res.status(500).json({ error: err });
     });
 });
 
@@ -127,7 +127,7 @@ router.get("/customers/:id", restricted, (req, res) => {
 
 router.put("/workers/:id", restricted, (req, res) => {
   const { id } = req.params;
-  const { time, tagline, job_title, company } = req.body;
+  const updatedInfo = req.body;
 
   return Users.findWorkerById(id)
     .then(async worker => {
