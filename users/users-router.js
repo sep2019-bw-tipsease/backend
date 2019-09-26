@@ -143,11 +143,16 @@ router.put("/workers/:id/tips", restricted, (req, res) => {
   const { id } = req.params;
   const { tip } = req.body;
 
-  return Users.getWorkerById(id)
-    .then(async worker => {
-      worker.tip_total = await Users.addTip(tip, id);
-
-      res.status(200).json(worker.tip_total);
+  Users.getTipTotal(id)
+    .then(currentTips => {
+      const newTotal = currentTips.tip_total + tip;
+      return newTotal;
+    })
+    .then(currentTotal => {
+      return Users.updateTip(currentTotal, id);
+    })
+    .then(currentTotal => {
+      res.status(200).json(currentTotal);
     })
     .catch(err => {
       console.log(err);
