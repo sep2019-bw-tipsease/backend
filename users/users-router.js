@@ -44,6 +44,7 @@ router.post("/workerlogin", (req, res) => {
       if (worker && bcrypt.compareSync(password, worker.password)) {
         const token = generateToken(worker);
         res.status(200).json({
+          worker,
           message: `Welcome ${worker.username}!`,
           token
         });
@@ -149,9 +150,11 @@ router.put("/workers/:id/tips", restricted, (req, res) => {
       return newTotal;
     })
     .then(currentTotal => {
+      console.log(currentTotal);
       return Users.updateTip(currentTotal, id);
     })
     .then(currentTotal => {
+      console.log(currentTotal);
       res.status(200).json(currentTotal);
     })
     .catch(err => {
