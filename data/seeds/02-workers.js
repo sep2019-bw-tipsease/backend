@@ -15,7 +15,7 @@ exports.seed = function(knex) {
           tagline: "Service, Just The Best.",
           job_title: "server",
           company: "Applebee's",
-          tip_total: "88.42"
+          tip_total: "88"
         },
         {
           id: 2,
@@ -27,7 +27,7 @@ exports.seed = function(knex) {
           tagline: "I wish I had luggage.",
           job_title: "bellhop",
           company: "Marriott",
-          tip_total: "26.54"
+          tip_total: "26"
         },
         {
           id: 3,
@@ -39,7 +39,7 @@ exports.seed = function(knex) {
           tagline: "Behold the power of cool.",
           job_title: "waiter",
           company: "Olive Garden",
-          tip_total: "52.42"
+          tip_total: "52"
         }
       ]);
     });
