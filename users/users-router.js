@@ -45,6 +45,7 @@ router.post("/workerlogin", (req, res) => {
       if (worker && bcrypt.compareSync(password, worker.password)) {
         const token = generateToken(worker);
         res.status(200).json({
+          worker,
           message: `Welcome ${worker.username}!`,
           token
         });
